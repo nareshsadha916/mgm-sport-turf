@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MGM SPORT — Premier Turf & Arena Slot Booking Platform</title>
+  <meta name="description" content="Book football, box cricket, and multi-sport turfs instantly with live availability, zero double-booking guarantee, and instant UPI confirmations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo-group" onclick="switchView('player')">
+        <div class="brand-badge">M</div>
+        <div class="brand-text">
+          <h1>MGM <span>SPORT</span></h1>
+          <div class="brand-tagline" data-i18n="tagline">Turf Booking Platform</div>
+        </div>
+      </div>
+
+      <!-- PORTAL SELECTOR PILLS -->
+      <nav class="nav-pills" id="navPortalPills">
+        <button class="nav-pill-btn active" id="btnViewPlayer" onclick="switchView('player')">
+          <i class="fa-solid fa-futbol"></i> <span data-i18n="navPlayer">Player Booking</span>
+        </button>
+        <button class="nav-pill-btn" id="btnViewOwner" onclick="switchView('owner')">
+          <i class="fa-solid fa-calendar-days"></i> <span data-i18n="navOwner">Owner Dashboard</span>
+        </button>
+        <button class="nav-pill-btn" id="btnViewAdmin" onclick="switchView('admin')">
+          <i class="fa-solid fa-shield-halved"></i> <span data-i18n="navAdmin">Admin Console</span>
+        </button>
+      </nav>
+
+      <!-- NAVIGATION ACTIONS -->
+      <div class="nav-actions">
+        <!-- Theme Switcher (Dark / Light) -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+          <span id="themeLabel">Dark</span>
+        </button>
+
+        <!-- Language Switcher (English / Tamil) -->
+        <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()">
+          <i class="fa-solid fa-globe"></i> <span id="currentLangLabel">தமிழ்</span>
+        </button>
+
+        <button class="btn-secondary" onclick="openMyBookingsModal()">
+          <i class="fa-solid fa-ticket"></i> <span data-i18n="myBookingsBtn">My Bookings</span>
+        </button>
+
+        <div id="authContainer">
+          <button class="btn-primary" onclick="openAuthModal()">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> <span data-i18n="loginBtn">Login / OTP</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       SECTION 1: PLAYER VIEW
+       ========================================== -->
+  <main id="playerView" class="player-view active">
+    
+    <!-- HERO SHOWCASE BANNER -->
+    <section class="hero-section">
+      <div class="hero-bg-container">
+        <img src="assets/images/hero_banner.jpg" alt="MGM Sports Turf Ground" class="hero-bg-img">
+        <div class="hero-gradient-overlay"></div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-pill-badge">
+          <span class="dot"></span>
+          <span data-i18n="liveSlotsBadge">Live 10-Minute Redis Hold • Zero Double Bookings</span>
+        </div>
+        <h2 class="hero-title" data-i18n="heroTitle">
+          Book Your Arena. <span class="highlight">Play Your Game.</span> Never Lose a Slot.
+        </h2>
+        <p class="hero-subtitle" data-i18n="heroSubtitle">
+          Instant online slot bookings for 5-a-side / 7-a-side football, box cricket, badminton, and multi-sport turfs with real-time court availability and instant UPI payment.
+        </p>
+
+        <!-- SEARCH BAR FORM -->
+        <div class="search-card">
+          <div class="search-field">
+            <label><i class="fa-solid fa-location-dot"></i> <span data-i18n="searchLocation">Location / City</span></label>
+            <select id="searchLocationSelect" onchange="filterVenues()">
+              <option value="all">All Locations (Chennai & Metro)</option>
+              <option value="OMR">OMR IT Corridor, Chennai</option>
+              <option value="Anna Nagar">Anna Nagar, Chennai</option>
+              <option value="Adyar">Adyar & ECR, Chennai</option>
+              <option value="T. Nagar">T. Nagar / Central</option>
+            </select>
+          </div>
+
+          <div class="search-field">
+            <label><i class="fa-solid fa-medal"></i> <span data-i18n="searchSport">Sport Category</span></label>
+            <select id="searchSportSelect" onchange="filterVenues()">
+              <option value="all">All Sports</option>
+              <option value="football">Football (5s & 7s)</option>
+              <option value="cricket">Box Cricket</option>
+              <option value="badminton">Badminton & Pickleball</option>
+            </select>
+          </div>
+
+          <div class="search-field">
+            <label><i class="fa-regular fa-calendar"></i> <span data-i18n="searchDate">Date</span></label>
+            <input type="date" id="searchDateInput" onchange="filterVenues()">
+          </div>
+
+          <div class="search-field">
+            <label><i class="fa-regular fa-clock"></i> <span data-i18n="searchTimeBand">Time Band</span></label>
+            <select id="searchTimeBandSelect" onchange="filterVenues()">
+              <option value="all">Any Time</option>
+              <option value="morning">Morning (6 AM - 12 PM)</option>
+              <option value="afternoon">Afternoon (12 PM - 4 PM)</option>
+              <option value="evening">Evening Peak (4 PM - 8 PM)</option>
+              <option value="night">Night Floodlight (8 PM - 2 AM)</option>
+            </select>
+          </div>
+
+          <button class="search-btn" onclick="filterVenues()">
+            <i class="fa-solid fa-magnifying-glass"></i> <span data-i18n="findSlotsBtn">Find Slots</span>
+          </button>
+        </div>
+
+        <!-- 3-LAYER GUARANTEE STRIP -->
+        <div class="promise-strip">
+          <div class="promise-item">
+            <span class="badge">LAYER 1</span>
+            <span>Atomic Redis Hold (SET key NX 10-min TTL)</span>
+          </div>
+          <div class="promise-item">
+            <span class="badge">LAYER 2</span>
+            <span>PostgreSQL Partial Unique Constraint</span>
+          </div>
+          <div class="promise-item">
+            <span class="badge">LAYER 3</span>
+            <span>Razorpay Webhook Verified Idempotency</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VENUES LIST SECTION -->
+    <div class="main-wrapper">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2 data-i18n="popularTurfsHeading">Featured Sports Arenas Near You</h2>
+          <p data-i18n="popularTurfsSub">Verified FIFA-grade astroturf, high-power LED floodlights, shower rooms & parking.</p>
+        </div>
+        <div class="sport-filters-row">
+          <button class="sport-chip active" onclick="setQuickSportFilter('all', this)"><i class="fa-solid fa-fire"></i> All Arenas</button>
+          <button class="sport-chip" onclick="setQuickSportFilter('football', this)"><i class="fa-solid fa-futbol"></i> Football</button>
+          <button class="sport-chip" onclick="setQuickSportFilter('cricket', this)"><i class="fa-solid fa-baseball-bat-ball"></i> Box Cricket</button>
+          <button class="sport-chip" onclick="setQuickSportFilter('badminton', this)"><i class="fa-solid fa-table-tennis-paddle-ball"></i> Badminton</button>
+        </div>
+      </div>
+
+      <!-- VENUES CONTAINER GRID -->
+      <div class="venue-grid" id="venuesContainer">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- ARCHITECTURE & RELIABILITY SHOWCASE -->
+      <section class="arch-showcase">
+        <div class="section-title-wrap">
+          <span class="hero-pill-badge"><i class="fa-solid fa-microchip"></i> System Architecture Highlights</span>
+          <h2>Zero Double-Booking Engine & Instant Settlement</h2>
+          <p>Engineered for high-traffic weekends, rain-friendly cancellations, and automated split payouts.</p>
+        </div>
+
+        <div class="arch-steps">
+          <div class="arch-step-box">
+            <div class="arch-step-num">1</div>
+            <h4>Instant Redis Lock</h4>
+            <p>Selecting a court instantly acquires a 10-minute atomic hold key in Redis. No other user can proceed to payment for that exact slot.</p>
+          </div>
+          <div class="arch-step-box">
+            <div class="arch-step-num">2</div>
+            <h4>PostgreSQL ACID Protection</h4>
+            <p>Database enforces partial unique indexes <code>(court_id, date, slot_start) WHERE status IN ('PENDING','CONFIRMED')</code>.</p>
+          </div>
+          <div class="arch-step-box">
+            <div class="arch-step-num">3</div>
+            <h4>Razorpay Route Split Payouts</h4>
+            <p>Automated marketplace split routes 95% revenue to the turf owner's bank account instantly while retaining platform commission.</p>
+          </div>
+          <div class="arch-step-box">
+            <div class="arch-step-num">4</div>
+            <h4>Fair Cancellation & Auto-Refunds</h4>
+            <p>Full 100% refund for >24h cancellations, 50% for 6-24h, and 100% automatic refund on bad weather / turf maintenance.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ==========================================
+       SECTION 2: TURF OWNER DASHBOARD
+       ========================================== -->
+  <main id="ownerView" class="owner-dashboard main-wrapper">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="hero-pill-badge"><i class="fa-solid fa-building-user"></i> Venue Manager Portal</span>
+        <h2>MGM Sports Arena — Command Center</h2>
+        <p>Live schedule matrix, walk-in counter booking, pricing control, and daily occupancy revenue.</p>
+      </div>
+
+      <div class="toolbar-controls">
+        <button class="btn-primary" onclick="openWalkinModal()">
+          <i class="fa-solid fa-plus"></i> <span data-i18n="addWalkinBtn">New Walk-In Booking</span>
+        </button>
+        <button class="btn-secondary" onclick="openBlockSlotModal()">
+          <i class="fa-solid fa-ban"></i> <span data-i18n="blockSlotBtn">Block for Maintenance</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS WIDGETS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Today's Total Revenue</div>
+        <div class="stat-value" id="ownerTodayRev">₹38,500</div>
+        <div class="stat-trend"><i class="fa-solid fa-arrow-up"></i> +18% vs yesterday</div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-title">Occupancy Rate</div>
+        <div class="stat-value" id="ownerOccupancy">84%</div>
+        <div class="stat-trend"><i class="fa-solid fa-fire"></i> Peak 100% from 6 PM - 11 PM</div>
+      </div>
+      <div class="stat-card amber">
+        <div class="stat-title">Confirmed Slots</div>
+        <div class="stat-value" id="ownerSlotsCount">26 / 32</div>
+        <div class="stat-trend"><i class="fa-solid fa-circle-check"></i> 6 slots available today</div>
+      </div>
+      <div class="stat-card rose">
+        <div class="stat-title">Counter Cash Collected</div>
+        <div class="stat-value" id="ownerCashCollected">₹14,200</div>
+        <div class="stat-trend">8 Walk-in players</div>
+      </div>
+    </div>
+
+    <!-- OWNER TOOLBAR & COURT MATRIX -->
+    <div class="manager-toolbar">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <label style="font-weight:700; font-size:13px; color:var(--text-secondary);">Date Filter:</label>
+        <input type="date" id="ownerScheduleDate" style="background:rgba(255,255,255,0.08); border-radius:6px; padding:6px 12px;" onchange="renderOwnerMatrix()">
+      </div>
+      <div class="slots-legend">
+        <div class="legend-item"><span class="legend-color legend-available"></span> Free Slot</div>
+        <div class="legend-item"><span class="legend-color legend-selected"></span> Online Paid (App)</div>
+        <div class="legend-item"><span class="legend-color" style="background:#3b82f6;"></span> Walk-in / Cash</div>
+        <div class="legend-item"><span class="legend-color" style="background:#f43f5e;"></span> Maintenance / Blocked</div>
+      </div>
+      <div>
+        <button class="btn-secondary" onclick="openStaffScannerModal()">
+          <i class="fa-solid fa-qrcode"></i> QR Check-In Scanner
+        </button>
+      </div>
+    </div>
+
+    <!-- DAY SCHEDULE MATRIX TABLE -->
+    <div class="schedule-matrix-wrap">
+      <table class="matrix-table" id="ownerScheduleTable">
+        <!-- Rendered dynamically -->
+      </table>
+    </div>
+
+    <!-- PRICING & SLOTS CONFIGURATION -->
+    <div class="admin-table-card">
+      <div class="card-title-bar">
+        <h4><i class="fa-solid fa-sliders"></i> Dynamic Pricing Rules & Peak Hours</h4>
+        <button class="btn-secondary" style="font-size:12px; padding:6px 14px;" onclick="savePricingRules()">Save Pricing</button>
+      </div>
+      <div style="padding:20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:20px;">
+        <div class="search-field">
+          <label>Weekday Off-Peak (6 AM - 4 PM)</label>
+          <input type="number" id="priceWeekdayOff" value="900">
+        </div>
+        <div class="search-field">
+          <label>Weekday Peak (4 PM - 12 AM)</label>
+          <input type="number" id="priceWeekdayPeak" value="1300">
+        </div>
+        <div class="search-field">
+          <label>Weekend Rate (Sat - Sun)</label>
+          <input type="number" id="priceWeekend" value="1600">
+        </div>
+        <div class="search-field">
+          <label>Advance Payment Token %</label>
+          <select id="pricingAdvancePct">
+            <option value="30">30% Advance (Balance at venue)</option>
+            <option value="50">50% Advance</option>
+            <option value="100">100% Full Prepayment</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================
+       SECTION 3: PLATFORM ADMIN CONSOLE
+       ========================================== -->
+  <main id="adminView" class="admin-dashboard main-wrapper">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="hero-pill-badge"><i class="fa-solid fa-gauge-high"></i> Platform Master Console</span>
+        <h2>MGM SPORT System Operations & Payouts</h2>
+        <p>Real-time platform metrics, venue onboarding KYC, Razorpay split payouts, and audit trails.</p>
+      </div>
+      <div>
+        <button class="btn-primary" onclick="simulateNewVenueOnboard()">
+          <i class="fa-solid fa-plus-circle"></i> Onboard New Turf
+        </button>
+      </div>
+    </div>
+
+    <!-- PLATFORM OVERVIEW STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Platform Gross Booking Value (GMV)</div>
+        <div class="stat-value">₹14,85,200</div>
+        <div class="stat-trend"><i class="fa-solid fa-arrow-trend-up"></i> 30-day volume</div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-title">Total Bookings Completed</div>
+        <div class="stat-value">1,248</div>
+        <div class="stat-trend">Zero double booking exceptions</div>
+      </div>
+      <div class="stat-card amber">
+        <div class="stat-title">Partner Turfs (Active)</div>
+        <div class="stat-value">18 Venues</div>
+        <div class="stat-trend">4 Under KYC review</div>
+      </div>
+      <div class="stat-card rose">
+        <div class="stat-title">Platform Net Commission (5%)</div>
+        <div class="stat-value">₹74,260</div>
+        <div class="stat-trend">Automated Razorpay Route</div>
+      </div>
+    </div>
+
+    <!-- PARTNER VENUES APPROVAL TABLE -->
+    <div class="admin-table-card">
+      <div class="card-title-bar">
+        <h4><i class="fa-solid fa-store"></i> Venue Onboarding & KYC Management</h4>
+        <span class="badge-tag badge-blue">4 Pending Review</span>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Venue Name</th>
+              <th>Owner / Contact</th>
+              <th>Courts</th>
+              <th>Commission %</th>
+              <th>KYC & Bank Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminVenuesTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SYSTEM AUDIT LOG -->
+    <div class="admin-table-card">
+      <div class="card-title-bar">
+        <h4><i class="fa-solid fa-receipt"></i> Immutable Transaction & Lock Audit Log</h4>
+        <span class="badge-tag badge-green">LIVE STREAM</span>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Event</th>
+              <th>Entity ID</th>
+              <th>Details</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="auditLogTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================
+       MODAL 1: INTERACTIVE SLOT BOOKING MODAL
+       ========================================== -->
+  <div class="modal-overlay" id="slotBookingModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3 id="modalVenueName">MGM Arena Booking</h3>
+          <p id="modalVenueLocation"><i class="fa-solid fa-location-dot"></i> OMR, Chennai</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeSlotBookingModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Court Tabs -->
+        <label style="font-size:12px; font-weight:700; text-transform:uppercase; color:var(--text-secondary); margin-bottom:10px; display:block;">Select Court / Pitch</label>
+        <div class="court-selection-row" id="modalCourtsRow">
+          <!-- Rendered in app.js -->
+        </div>
+
+        <!-- Date Selection Ribbon -->
+        <label style="font-size:12px; font-weight:700; text-transform:uppercase; color:var(--text-secondary); margin-bottom:10px; display:block;">Select Date</label>
+        <div class="date-ribbon" id="modalDateRibbon">
+          <!-- Rendered in app.js -->
+        </div>
+
+        <!-- Redis Hold Active Notification -->
+        <div class="hold-timer-alert" id="holdTimerAlert" style="display:none;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <i class="fa-solid fa-lock" style="color:var(--accent-amber); font-size:16px;"></i>
+            <span><strong>Slots Locked in Redis!</strong> Complete payment before timeout:</span>
+          </div>
+          <div class="timer-countdown" id="holdTimerCountdown">10:00</div>
+        </div>
+
+        <!-- Slot Legend -->
+        <div class="slots-legend">
+          <div class="legend-item"><span class="legend-color legend-available"></span> Available</div>
+          <div class="legend-item"><span class="legend-color legend-selected"></span> Selected</div>
+          <div class="legend-item"><span class="legend-color legend-held"></span> In Cart / Held</div>
+          <div class="legend-item"><span class="legend-color legend-booked"></span> Booked</div>
+        </div>
+
+        <!-- Slot Grid Container -->
+        <div id="modalSlotsContainer">
+          <!-- Rendered in app.js -->
+        </div>
+      </div>
+
+      <!-- Checkout Panel Bottom Drawer -->
+      <div class="booking-checkout-panel">
+        <div class="checkout-summary-details">
+          <div class="summary-col">
+            <h4>Selected Slots</h4>
+            <div class="val" id="checkoutSlotSummary">No slot selected</div>
+          </div>
+          <div class="summary-col">
+            <h4>Payment Mode</h4>
+            <select id="checkoutPayModeSelect" onchange="updateCheckoutCalculations()" style="padding:6px 10px; font-size:13px;">
+              <option value="full">100% Full Prepayment</option>
+              <option value="advance30">30% Advance Token (Pay rest at turf)</option>
+            </select>
+          </div>
+          <div class="summary-col">
+            <h4>Total Payable Now</h4>
+            <div class="total-amt" id="checkoutPayableAmt">₹0</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; align-items:center;">
+          <input type="text" id="couponInput" placeholder="Coupon (e.g. MGMFIRST)" style="width:160px; font-size:12px; text-transform:uppercase;">
+          <button class="btn-secondary" style="font-size:12px; padding:10px 14px;" onclick="applyCoupon()">Apply</button>
+          <button class="btn-primary" id="btnProceedToPay" onclick="proceedToPaymentGateway()" disabled>
+            <i class="fa-solid fa-bolt"></i> Proceed to Pay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: RAZORPAY PAYMENT GATEWAY SIMULATION
+       ========================================== -->
+  <div class="modal-overlay" id="paymentGatewayModal">
+    <div class="modal-card gateway-modal">
+      <div class="modal-header">
+        <div class="gateway-badge-header">
+          <span class="rzp-logo">Razorpay</span>
+          <span style="font-size:13px; font-weight:700;">Secure Checkout • MGM SPORT</span>
+        </div>
+        <button class="modal-close-btn" onclick="closePaymentModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div style="text-align:center; margin-bottom:20px;">
+          <div style="font-size:12px; color:var(--text-secondary); text-transform:uppercase;">Amount to be Paid</div>
+          <div style="font-size:32px; font-weight:800; color:var(--primary-bright);" id="gatewayPayableAmount">₹1,200</div>
+          <div style="font-size:12px; color:var(--text-muted);" id="gatewaySlotInfo">Court A • 7:00 PM - 8:00 PM</div>
+        </div>
+
+        <!-- Payment Method Tabs -->
+        <div class="payment-method-selector">
+          <div class="pay-opt-card active" id="payMethodUpi" onclick="selectPayMethod('upi')">
+            <i class="fa-solid fa-mobile-screen-button" style="color:var(--primary-bright); font-size:20px; margin-bottom:6px;"></i>
+            <div style="font-size:13px; font-weight:700;">UPI / QR</div>
+            <div style="font-size:11px; color:var(--text-secondary);">GPay, PhonePe, Paytm</div>
+          </div>
+          <div class="pay-opt-card" id="payMethodCard" onclick="selectPayMethod('card')">
+            <i class="fa-regular fa-credit-card" style="color:var(--accent-cyan); font-size:20px; margin-bottom:6px;"></i>
+            <div style="font-size:13px; font-weight:700;">Cards / Net Banking</div>
+            <div style="font-size:11px; color:var(--text-secondary);">Visa, MasterCard, Rupay</div>
+          </div>
+        </div>
+
+        <!-- UPI Section -->
+        <div id="upiPaymentSection">
+          <div class="upi-qr-box">
+            <!-- Simulated QR code SVG -->
+            <svg width="140" height="140" viewBox="0 0 100 100">
+              <path fill="#070d0a" d="M10,10 h30 v30 h-30 z M15,15 v20 h20 v-20 z M20,20 h10 v10 h-10 z"/>
+              <path fill="#070d0a" d="M60,10 h30 v30 h-30 z M65,15 v20 h20 v-20 z M70,20 h10 v10 h-10 z"/>
+              <path fill="#070d0a" d="M10,60 h30 v30 h-30 z M15,65 v20 h20 v-20 z M20,70 h10 v10 h-10 z"/>
+              <rect x="45" y="15" width="8" height="25" fill="#070d0a"/>
+              <rect x="15" y="45" width="25" height="8" fill="#070d0a"/>
+              <rect x="45" y="45" width="10" height="10" fill="#10b981"/>
+              <rect x="65" y="45" width="25" height="8" fill="#070d0a"/>
+              <rect x="55" y="60" width="10" height="25" fill="#070d0a"/>
+              <rect x="70" y="70" width="20" height="20" fill="#070d0a"/>
+            </svg>
+            <div style="color:#070d0a; font-size:10px; font-weight:800; margin-top:4px;">Scan with Any UPI App</div>
+          </div>
+
+          <div style="text-align:center; font-size:12px; color:var(--text-secondary); margin-bottom:8px;">Or click your preferred app:</div>
+          <div class="upi-apps-row">
+            <button class="upi-app-btn" onclick="executeMockPayment('Google Pay')"><i class="fa-brands fa-google-pay" style="color:#38bdf8;"></i> GPay</button>
+            <button class="upi-app-btn" onclick="executeMockPayment('PhonePe')"><i class="fa-solid fa-mobile" style="color:#a855f7;"></i> PhonePe</button>
+            <button class="upi-app-btn" onclick="executeMockPayment('Paytm')"><i class="fa-solid fa-wallet" style="color:#06b6d4;"></i> Paytm</button>
+          </div>
+        </div>
+
+        <!-- Card Section (Hidden by default) -->
+        <div id="cardPaymentSection" style="display:none; flex-direction:column; gap:12px;">
+          <input type="text" placeholder="Card Number (4532 •••• •••• ••••)">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <input type="text" placeholder="MM / YY">
+            <input type="password" placeholder="CVV">
+          </div>
+          <input type="text" placeholder="Cardholder Name">
+          <button class="btn-primary" style="width:100%; justify-content:center; margin-top:8px;" onclick="executeMockPayment('Credit Card')">
+            Authorize & Pay
+          </button>
+        </div>
+
+        <div style="margin-top:18px; padding-top:14px; border-top:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--text-muted);">
+          <span><i class="fa-solid fa-shield-cat"></i> 256-bit SSL Encrypted</span>
+          <span>PCI-DSS Level 1 Compliant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: CONFIRMED BOOKING PASS & TICKET
+       ========================================== -->
+  <div class="modal-overlay" id="ticketModal">
+    <div class="modal-card" style="max-width:680px;">
+      <div class="ticket-card">
+        <div class="ticket-header">
+          <span class="ticket-status-pill"><i class="fa-solid fa-circle-check"></i> BOOKING CONFIRMED</span>
+          <h2 style="font-size:24px; color:#fff;" id="ticketVenueName">MGM Grand Sports Arena</h2>
+          <p style="font-size:13px; opacity:0.9;" id="ticketBookingId">Booking Ref: #MGM-2026-8941</p>
+        </div>
+
+        <div class="ticket-body">
+          <div class="ticket-details">
+            <div class="ticket-detail-item">
+              <div class="ticket-detail-label">Court & Sport</div>
+              <div class="ticket-detail-val" id="ticketCourtSport">Court A (FIFA 7-a-side AstroTurf)</div>
+            </div>
+            <div class="ticket-detail-item">
+              <div class="ticket-detail-label">Date & Timing</div>
+              <div class="ticket-detail-val" id="ticketDateTiming">Fri, 17 Oct 2026 • 7:00 PM - 8:00 PM</div>
+            </div>
+            <div class="ticket-detail-item">
+              <div class="ticket-detail-label">Amount Paid / Balance</div>
+              <div class="ticket-detail-val" id="ticketAmountSummary">₹1,200 (Paid in Full via UPI)</div>
+            </div>
+            <div class="ticket-detail-item">
+              <div class="ticket-detail-label">Customer Contact</div>
+              <div class="ticket-detail-val" id="ticketCustomer">+91 98765 43210</div>
+            </div>
+          </div>
+
+          <div class="ticket-qr">
+            <!-- Simulated QR -->
+            <svg width="120" height="120" viewBox="0 0 100 100">
+              <path fill="#070d0a" d="M10,10 h30 v30 h-30 z M15,15 v20 h20 v-20 z M20,20 h10 v10 h-10 z"/>
+              <path fill="#070d0a" d="M60,10 h30 v30 h-30 z M65,15 v20 h20 v-20 z M70,20 h10 v10 h-10 z"/>
+              <path fill="#070d0a" d="M10,60 h30 v30 h-30 z M15,65 v20 h20 v-20 z M20,70 h10 v10 h-10 z"/>
+              <rect x="45" y="15" width="8" height="25" fill="#070d0a"/>
+              <rect x="15" y="45" width="25" height="8" fill="#070d0a"/>
+              <rect x="45" y="45" width="10" height="10" fill="#059669"/>
+              <rect x="65" y="45" width="25" height="8" fill="#070d0a"/>
+              <rect x="55" y="60" width="10" height="25" fill="#070d0a"/>
+              <rect x="70" y="70" width="20" height="20" fill="#070d0a"/>
+            </svg>
+            <span style="color:#070d0a; font-size:10px; font-weight:800; margin-top:6px;">Scan at Turf Gate</span>
+          </div>
+        </div>
+
+        <div style="background:rgba(0,0,0,0.3); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+          <button class="btn-secondary" onclick="shareSplitBillWhatsApp()">
+            <i class="fa-brands fa-whatsapp" style="color:#22c55e;"></i> Split Bill with Team
+          </button>
+          <button class="btn-primary" onclick="closeTicketModal()">
+            <i class="fa-solid fa-check"></i> Done & View Bookings
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 4: MY BOOKINGS LIST
+       ========================================== -->
+  <div class="modal-overlay" id="myBookingsModal">
+    <div class="modal-card" style="max-width:760px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3><i class="fa-solid fa-ticket"></i> My Bookings & Passes</h3>
+          <p>View upcoming games, check-in QR codes, or cancel per policy.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeMyBookingsModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="myBookingsListContainer">
+        <!-- Rendered in app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 5: OWNER WALKIN COUNTER BOOKING
+       ========================================== -->
+  <div class="modal-overlay" id="walkinModal">
+    <div class="modal-card" style="max-width:540px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3><i class="fa-solid fa-cash-register"></i> Fast Walk-In Booking</h3>
+          <p>Book instantly for players at front desk; blocks slot immediately.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeWalkinModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="search-field">
+          <label>Customer Name</label>
+          <input type="text" id="walkinName" placeholder="Player name">
+        </div>
+        <div class="search-field">
+          <label>Mobile Number</label>
+          <input type="text" id="walkinPhone" placeholder="10-digit number">
+        </div>
+        <div class="search-field">
+          <label>Select Court</label>
+          <select id="walkinCourt">
+            <option value="Court A (FIFA 7s)">Court A (FIFA 7s)</option>
+            <option value="Court B (5-a-side)">Court B (5-a-side)</option>
+            <option value="Court C (Box Cricket)">Court C (Box Cricket)</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Time Slot</label>
+          <select id="walkinSlot">
+            <option value="06:00 PM - 07:00 PM">06:00 PM - 07:00 PM</option>
+            <option value="07:00 PM - 08:00 PM">07:00 PM - 08:00 PM</option>
+            <option value="08:00 PM - 09:00 PM">08:00 PM - 09:00 PM</option>
+            <option value="09:00 PM - 10:00 PM">09:00 PM - 10:00 PM</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Payment Mode Collected</label>
+          <select id="walkinPaymentMethod">
+            <option value="Cash at Counter">Cash at Counter</option>
+            <option value="Front Desk QR / UPI">Front Desk QR / UPI</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Amount (₹)</label>
+          <input type="number" id="walkinAmount" value="1200">
+        </div>
+        <button class="btn-primary" style="margin-top:10px; justify-content:center;" onclick="submitWalkinBooking()">
+          <i class="fa-solid fa-check"></i> Confirm & Lock Slot
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 6: BLOCK SLOT FOR MAINTENANCE / RAIN
+       ========================================== -->
+  <div class="modal-overlay" id="blockSlotModal">
+    <div class="modal-card" style="max-width:500px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3><i class="fa-solid fa-ban" style="color:var(--accent-rose);"></i> Block Court Slot</h3>
+          <p>Slot will be immediately marked unavailable for public booking.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeBlockSlotModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="search-field">
+          <label>Select Court</label>
+          <select id="blockCourtSelect">
+            <option value="Court A (FIFA 7s)">Court A (FIFA 7s)</option>
+            <option value="Court B (5-a-side)">Court B (5-a-side)</option>
+            <option value="Court C (Box Cricket)">Court C (Box Cricket)</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Slot Timing</label>
+          <select id="blockSlotTimeSelect">
+            <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+            <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+            <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label>Reason for Blocking</label>
+          <select id="blockReasonSelect">
+            <option value="Turf Maintenance & Brushing">Turf Maintenance & Brushing</option>
+            <option value="Heavy Rain / Waterlogged">Heavy Rain / Waterlogged</option>
+            <option value="Private Tournament / Coaching">Private Tournament / Coaching</option>
+          </select>
+        </div>
+        <button class="btn-secondary" style="border-color:var(--accent-rose); color:var(--accent-rose); justify-content:center; margin-top:8px;" onclick="confirmBlockSlot()">
+          <i class="fa-solid fa-lock"></i> Apply Block
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 7: QR CODE SCANNER (STAFF CHECK-IN)
+       ========================================== -->
+  <div class="modal-overlay" id="staffScannerModal">
+    <div class="modal-card" style="max-width:480px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3><i class="fa-solid fa-qrcode"></i> Front Desk Check-In Scanner</h3>
+          <p>Scan player ticket QR or enter 4-digit code.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeStaffScannerModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div style="width:200px; height:200px; margin:0 auto 16px; border:2px dashed var(--primary); border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(16,185,129,0.05);">
+          <i class="fa-solid fa-camera" style="font-size:36px; color:var(--primary); margin-bottom:8px;"></i>
+          <span style="font-size:12px; color:var(--text-secondary);">Camera Stream Active</span>
+        </div>
+        <div class="search-field" style="margin-bottom:14px;">
+          <input type="text" id="manualBookingCodeInput" placeholder="Enter Booking ID (e.g. 8941)" style="text-align:center; font-size:16px; font-weight:700;">
+        </div>
+        <button class="btn-primary" style="width:100%; justify-content:center;" onclick="verifyCheckIn()">
+          Verify & Mark Checked-In
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 8: USER AUTH / OTP SIMULATION
+       ========================================== -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-card" style="max-width:440px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3><i class="fa-solid fa-user-shield"></i> Player Login & Sign-up</h3>
+          <p>Enter phone number for instant OTP verification.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closeAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="search-field">
+          <label>Full Name</label>
+          <input type="text" id="authNameInput" placeholder="e.g. Rajesh Kumar" value="Rajesh Kumar">
+        </div>
+        <div class="search-field">
+          <label>Phone Number (India)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="text" value="+91" disabled style="width:60px; text-align:center;">
+            <input type="tel" id="authPhoneInput" placeholder="98765 43210" value="9876543210" style="flex:1;">
+          </div>
+        </div>
+
+        <div id="otpInputSection" style="display:none;" class="search-field">
+          <label>Enter 6-Digit OTP (Use: <strong>123456</strong>)</label>
+          <input type="text" id="authOtpInput" placeholder="123456" maxlength="6" style="text-align:center; letter-spacing:6px; font-size:18px; font-weight:800;">
+        </div>
+
+        <button class="btn-primary" id="btnSendVerifyOtp" style="justify-content:center; margin-top:8px;" onclick="handleAuthAction()">
+          Send OTP
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="logo-group" style="margin-bottom:14px;">
+          <div class="brand-badge">M</div>
+          <div class="brand-text">
+            <h2>MGM <span>SPORT</span></h2>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--text-secondary); max-width:320px; margin-bottom:14px;">
+          Next-generation cloud booking architecture for sports turfs. Zero double-booking concurrency guarantee backed by Redis atomic locks & Postgres transactional rules.
+        </p>
+        <div style="display:flex; gap:12px; color:var(--primary-bright); font-size:16px;">
+          <i class="fa-brands fa-whatsapp"></i>
+          <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-facebook"></i>
+          <i class="fa-brands fa-x-twitter"></i>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Sports Categories</h4>
+        <ul>
+          <li><a href="#">FIFA 7-a-side Football</a></li>
+          <li><a href="#">5-a-side Astro Cage</a></li>
+          <li><a href="#">Indoor Box Cricket</a></li>
+          <li><a href="#">Badminton & Pickleball</a></li>
+          <li><a href="#">Rooftop Arenas</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Turf Partners</h4>
+        <ul>
+          <li><a href="#" onclick="switchView('owner')">Venue Owner Dashboard</a></li>
+          <li><a href="#" onclick="switchView('admin')">Platform Admin</a></li>
+          <li><a href="#">Pricing Engine</a></li>
+          <li><a href="#">Split-the-Bill Setup</a></li>
+          <li><a href="#">Hardware Automation</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Architecture Standards</h4>
+        <div style="font-size:12px; color:var(--text-secondary); display:flex; flex-direction:column; gap:8px;">
+          <div><i class="fa-solid fa-check-double" style="color:var(--primary-bright);"></i> Spring Boot 3 & Java 21 Monolith</div>
+          <div><i class="fa-solid fa-database" style="color:var(--primary-bright);"></i> PostgreSQL 16 & PostGIS "Near Me"</div>
+          <div><i class="fa-solid fa-bolt" style="color:var(--primary-bright);"></i> Redis TTL 10-Min Atomic Holds</div>
+          <div><i class="fa-solid fa-money-bill-wave" style="color:var(--primary-bright);"></i> Razorpay Route Split Settlement</div>
+          <div><i class="fa-solid fa-shield-halved" style="color:var(--primary-bright);"></i> DPDP Act 2023 Compliant</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 MGM SPORT Platforms Private Limited. All rights reserved.</div>
+      <div>Designed & Developed per Project Solution Architecture v1.0.</div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

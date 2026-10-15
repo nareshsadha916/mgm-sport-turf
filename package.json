@@ -1,0 +1,23 @@
+{
+  "name": "mgm-sport-turf",
+  "version": "1.0.0",
+  "description": "MGM SPORT — Premier Turf & Arena Slot Booking Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "turf",
+    "sports",
+    "football",
+    "box-cricket",
+    "badminton",
+    "booking",
+    "slot-booking"
+  ],
+  "author": "Naresh",
+  "license": "ISC"
+}

@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: mgm-sport-turf
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: ""
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
